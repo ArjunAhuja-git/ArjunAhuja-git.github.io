@@ -1,4 +1,3 @@
-var gravity = 0.1;
 
 //constructor func for drops
 function Drop(x, prevTime) {
@@ -10,16 +9,19 @@ function Drop(x, prevTime) {
   this.r = 0;
   
   this.show = function() {
-   	stroke(255);
-	push();
-	translate(this.x,this.y);
-	beginShape();
-	strokeWeight(1);
-	vertex(0,-5);
-	quadraticVertex(3, 0, 0, 1);
-	quadraticVertex(-3,0, 0, -5);
-	endShape(CLOSE);
-	pop();
+    stroke(255);
+     push();
+     translate(this.x,this.y);
+     beginShape();
+     strokeWeight(1);
+     vertex(0,-5);
+     quadraticVertex(3, 0, 0, 1);
+     quadraticVertex(-3,0, 0, -5);
+     endShape(CLOSE);
+     pop();
+    // stroke(0,60,250);
+    // strokeWeight(3);
+    // line(this.x, this.y, this.x, this.y + this.length);
   };
   
   this.time_update = function(time) {
@@ -28,7 +30,6 @@ function Drop(x, prevTime) {
   
   this.move = function(speed) {
     this.y = this.y + speed;
-    this.speed = speed + gravity;
   };
   
 }
@@ -69,7 +70,7 @@ function draw() {
     }
   } else {
     dropsec.show();
-    dropsec.move(20);
+    dropsec.move(10);
     ellipse(dropsec.x, 620, dropsec.time*3, dropsec.time*2);
   }
   
@@ -93,7 +94,14 @@ function draw() {
     }
   } else {
     dropmin.show();
-    dropmin.move(1);
+    timeLeft = 60 - second();
+    disLeft = 620 - dropmin.y;
+    disToCover = disLeft/(timeLeft*frameRate());
+    //console.log(620, dropmin.y, disToCover);
+    if(minute() > dropmin.time) {
+      disToCover = 620 - dropmin.y;
+    }
+    dropmin.move(disToCover);
     ellipse(dropmin.x, 620, dropmin.time*3, dropmin.time*2);
   }
   
@@ -111,7 +119,13 @@ function draw() {
     }
   } else {
     drophr.show();
-    drophr.move(0.5);
+    timeLeft = 3600 - minute()*60 - second();
+    disLeft = 620 - drophr.y;
+    disToCover = disLeft/(timeLeft*frameRate());
+    if(hour() > drophr.time) {
+      disToCover = 620 - drophr.y;
+    }
+    drophr.move(disToCover);
     ellipse(drophr.x, 620, drophr.time*3, drophr.time*2);
   }
 }
