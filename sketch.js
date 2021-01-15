@@ -39,6 +39,7 @@ var drop;
 
 function setup() {
   createCanvas(800, 800);
+  
   noFill();
  
   dropsec = new Drop(200, 0);
@@ -70,13 +71,21 @@ function draw() {
     }
   } else {
     dropsec.show();
-    dropsec.move(10);
+    var dt = new Date( );
+    timeLeft = 1000 - dt.getMilliseconds();
+    disLeft = 620 - dropsec.y;
+    disToCover = disLeft/(timeLeft*frameRate());
+    //console.log(620, dropmin.y, disToCover);
+    if(second() != dropsec.time) {
+      disToCover = 620 - dropsec.y;
+    }
+    dropsec.move(disToCover);
     ellipse(dropsec.x, 620, dropsec.time*3, dropsec.time*2);
   }
   
   //console.log(dropsec.time, second());
   
-  if (dropmin.y >= 619) {
+  if (dropmin.y >= 620) {
     //make an elipse here.
     dropmin2 = new Drop(400, dropmin.time);
     dropmin.time_update(minute());
@@ -98,14 +107,14 @@ function draw() {
     disLeft = 620 - dropmin.y;
     disToCover = disLeft/(timeLeft*frameRate());
     //console.log(620, dropmin.y, disToCover);
-    if(minute() > dropmin.time) {
+    if(minute() != dropmin.time) {
       disToCover = 620 - dropmin.y;
     }
     dropmin.move(disToCover);
     ellipse(dropmin.x, 620, dropmin.time*3, dropmin.time*2);
   }
   
-  if (drophr.y >= 619) {
+  if (drophr.y >= 620) {
     //make an elipse here.
     drophr2 = new Drop(600, drophr.time);
     drophr.time_update(hour());
@@ -122,7 +131,7 @@ function draw() {
     timeLeft = 3600 - minute()*60 - second();
     disLeft = 620 - drophr.y;
     disToCover = disLeft/(timeLeft*frameRate());
-    if(hour() > drophr.time) {
+    if(hour() != drophr.time) {
       disToCover = 620 - drophr.y;
     }
     drophr.move(disToCover);
